@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.UserMapper">
+
+  
+ 
+  <insert id="insertUser" parameterType="com.demo.domain.po.User">
+    
+      insert into yhb_demo_user (userName,
+      passWard,
+      createTime,
+      updateTime)
+      values(#{userName,jdbcType=VARCHAR},#{passWard,jdbcType=VARCHAR},
+      now(), now())
+  </insert>
+  
+  <select id="selectUser"  parameterType="com.demo.domain.po.User"
+                     resultType="com.demo.domain.po.User">
+    select 
+	  userId,
+      userName,
+      passWard,
+      createTime,
+      updateTime
+    from 
+      yhb_demo_user
+      where 1=1
+        <if test="userName!=null and userName!=''">
+        AND userName = #{personName}
+        </if>
+        <if test="userId!=null">
+        AND userId like #{userId}
+        </if>
+        order by createTime desc
+
+  </select>
+  
+  <update id="updateUser" parameterType="com.demo.domain.po.User">
+		update yhb_demo_user
+			set
+			<if test="userName!=null and userName!=''">
+				userName = #{userName},
+			</if>
+			<if test="passWard!=null and passWard!=''">
+				passWard = #{passWard},
+			</if>
+			updateTime = now()
+			where userId = #{userId}
+	</update>
+</mapper>
